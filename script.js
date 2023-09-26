@@ -18,6 +18,13 @@ function generatePassword() {
     specialChars: false,
   }
 
+  var criteriaNames = {
+    lowercase: "lowercased characters",
+    uppercase: "uppercased characters",
+    numeric: "numbers",
+    specialChars: "special characters"
+  }
+
   var passwordLength = prompt("How many characters do you want your password to have?");
 
   // Check if password length is long enough.
@@ -34,9 +41,35 @@ function generatePassword() {
   passwordCriteria.numeric = confirm("Include numbers?");
   passwordCriteria.specialChars = confirm("Include special characters like '!' or '$' ?");
 
-  console.log(passwordCriteria);
+  var checkCriteria = Object.values(passwordCriteria).filter((isSelected) => {
+    return !isSelected
+  })
+
+  // Check if user has said "Cancel" to all criteria.
+  if (checkCriteria.length === Object.keys(passwordCriteria).length) {
+    alert("You must pick at least one password criteria. Please try again.");
+  } else {
+    var selectedCriteria = Object.keys(passwordCriteria).filter((criteria) => {
+      return passwordCriteria[criteria];
+    })
+
+    var criteriaString = "";
+    for (var i = 0; i < selectedCriteria.length; i++) {
+      criteriaString += "- " + criteriaNames[selectedCriteria[i]];
+
+      if (i < selectedCriteria.length - 1) {
+        criteriaString += "\n";
+      }
+    }
+
+    alert("You've selected the following criteria: \n" + criteriaString);
+  }
 
   return "";
+}
+
+function generatePasswordHelper(passwordCriteria) {
+
 }
 
 // Add event listener to generate button
