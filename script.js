@@ -27,6 +27,15 @@ function generatePassword() {
     alert("Please enter a number.");
   }
 
+  // Prompt user to see which criteria they want to have
+  alert("You'll be prompted which criteria you want to add, click 'Ok' to include or 'Cancel' to exclude");
+  passwordCriteria.lowercase = confirm("Include lowercase characters?");
+  passwordCriteria.uppercase = confirm("Include uppercase characters?");
+  passwordCriteria.numeric = confirm("Include numbers?");
+  passwordCriteria.specialChars = confirm("Include special characters like '!' or '$' ?");
+
+  console.log(passwordCriteria);
+
   return "";
 }
 
