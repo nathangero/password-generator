@@ -75,18 +75,36 @@ function generatePassword() {
   return this.generatePasswordHelper(passwordLength, passwordCriteria)
 }
 
-// Helper function to generate the password based upon the user's criteria
-function generatePasswordHelper(passwordLength, passwordCriteria) {
-  var lowercase = "abcdefjhijklmnopqrstuvwxyz";
-  var uppercase = "ABCDEFJHIJKLMNOPQRSTUVWXYZ";
-  var numbers = "0123456789";
-  var specialChars = "!@#$%^&*-_+,.?~"
-  var combinedCriteria = "";
 
-  
+// Helper function to generate the password based upon the user's criteria
+function generatePasswordHelper(passwordLength, passwordCriteria) {  
   // Shuffle the criteria around to try and get a more shuffled combinedCriteria string
+  var criteriaKeys = this.shuffleCriteria(passwordCriteria);
+
+  // Create the combinedCriteria string depending on the user's criteria
+  var combinedCriteria = this.getCriteriaStrings(criteriaKeys, passwordCriteria);
+ 
+  var password = "";
+
+  // Create the password
+  for (var i = 0; i < passwordLength; i++) {
+    // Get a random index from the criteria chosen
+    var randomIndex = Math.floor(Math.random() * combinedCriteria.length);
+
+    // Get a char from the corresponding index
+    var randomChar = combinedCriteria.charAt(randomIndex);
+    // console.log("randomChar:", randomChar);
+    password += randomChar;
+  }
+
+  return password;
+}
+
+// Shuffle the order of the criteria to create some randomness
+function shuffleCriteria(passwordCriteria) {
   var passwordCriteriaLength = Object.keys(passwordCriteria).length;
   var criteriaKeys = Object.keys(passwordCriteria);
+  // console.log("pre shuffle:", criteriaKeys);
 
   for (var i = 0; i < passwordCriteriaLength; i++) {
     var indexToUse = Math.floor(Math.random() * passwordCriteriaLength);
@@ -97,8 +115,19 @@ function generatePasswordHelper(passwordLength, passwordCriteria) {
     criteriaKeys[indexToUse] = temp;
   }
 
+  // console.log("post shuffle:", criteriaKeys);
 
-  // Create the combinedCriteria string depending on the user's criteria
+  return criteriaKeys;
+}
+
+// Get strings needed to make the password
+function getCriteriaStrings(criteriaKeys, passwordCriteria) {
+  var lowercase = "abcdefjhijklmnopqrstuvwxyz";
+  var uppercase = "ABCDEFJHIJKLMNOPQRSTUVWXYZ";
+  var numbers = "0123456789";
+  var specialChars = "!@#$%^&*-_+,.?~";
+  var combinedCriteria = "";
+
   for (var i = 0; i < criteriaKeys.length; i++) {
     var criteriaName = criteriaKeys[i];
 
@@ -120,22 +149,7 @@ function generatePasswordHelper(passwordLength, passwordCriteria) {
     }
   }
 
-  console.log("combinedCriteria:", combinedCriteria)
- 
-  var password = "";
-
-  // Create the password
-  for (var i = 0; i < passwordLength; i++) {
-    // Get a random index from the criteria chosen
-    var randomIndex = Math.floor(Math.random() * combinedCriteria.length);
-
-    // Get a char from the corresponding index
-    var randomChar = combinedCriteria.charAt(randomIndex);
-    console.log("randomChar:", randomChar);
-    password += randomChar;
-  }
-
-  return password;
+  return combinedCriteria;
 }
 
 // Add event listener to generate button
