@@ -19,8 +19,8 @@ function generatePassword() {
   }
 
   var criteriaNames = {
-    lowercase: "lowercased characters",
-    uppercase: "uppercased characters",
+    lowercase: "lowercase characters",
+    uppercase: "uppercase characters",
     numeric: "numbers",
     specialChars: "special characters"
   }
@@ -49,11 +49,12 @@ function generatePassword() {
   if (checkCriteria.length === Object.keys(passwordCriteria).length) {
     alert("You must pick at least one password criteria. Please try again.");
   } else {
+    // Show the user the criteria they've chosen
     var selectedCriteria = Object.keys(passwordCriteria).filter((criteria) => {
       return passwordCriteria[criteria];
     })
 
-    var criteriaString = "";
+    var criteriaString = "- " + passwordLength + " characters\n";
     for (var i = 0; i < selectedCriteria.length; i++) {
       criteriaString += "- " + criteriaNames[selectedCriteria[i]];
 
@@ -65,11 +66,65 @@ function generatePassword() {
     alert("You've selected the following criteria: \n" + criteriaString);
   }
 
-  return "";
+  return this.generatePasswordHelper(passwordLength, passwordCriteria)
 }
 
-function generatePasswordHelper(passwordCriteria) {
+// Helper function to generate the password based upon the user's criteria
+function generatePasswordHelper(passwordLength, passwordCriteria) {
+  var lowercase = "abcdefjhijklmnopqrstuvwxyz";
+  var uppercase = "ABCDEFJHIJKLMNOPQRSTUVWXYZ";
+  var numbers = "0123456789";
+  var specialChars = "!@#$%^&*-_+,.?~"
+  var combinedCriteria = "";
 
+  var criteriaKeys = Object.keys(passwordCriteria)
+
+  // Create the combinedCriteria string depending on the user's criteria
+  for (var i = 0; i < Object.keys(passwordCriteria).length; i++) {
+    switch (criteriaKeys[i]) {
+      case "lowercase":
+        if (passwordCriteria.lowercase) {
+          combinedCriteria += lowercase;
+        }
+        break;
+
+        
+      case "uppercase":
+        if (passwordCriteria.uppercase) {
+          combinedCriteria += uppercase;
+        }
+        break;
+
+        
+      case "numeric":
+        if (passwordCriteria.numeric) {
+          combinedCriteria += numbers;
+        }
+        break;
+
+        
+      case "specialChars":
+        if (passwordCriteria.specialChars) {
+          combinedCriteria += specialChars;
+        }
+        break;
+    }
+  }
+ 
+  var password = "";
+
+  // Create the password
+  for (var i = 0; i < passwordLength; i++) {
+    // Get a random index from the criteria chosen
+    var randomIndex = Math.floor(Math.random() * combinedCriteria.length);
+
+    // Get a char from the corresponding index
+    var randomChar = combinedCriteria.charAt(randomIndex);
+    console.log("randomChar:", randomChar);
+    password += randomChar;
+  }
+
+  return password;
 }
 
 // Add event listener to generate button
