@@ -30,8 +30,11 @@ function generatePassword() {
   // Check if password length is long enough.
   if (passwordLength < 8 || passwordLength > 128) {
     alert("Password length must between 8-128 characters. Please try again.");
+    return "";
+
   } else if (isNaN(passwordLength)) {
     alert("Please enter a number.");
+    return "";
   }
 
   // Prompt user to see which criteria they want to have
@@ -41,6 +44,7 @@ function generatePassword() {
   passwordCriteria.numeric = confirm("Include numbers?");
   passwordCriteria.specialChars = confirm("Include special characters like '!' or '$' ?");
 
+  // Get all criteria that the user selected
   var checkCriteria = Object.values(passwordCriteria).filter((isSelected) => {
     return !isSelected
   })
@@ -48,6 +52,8 @@ function generatePassword() {
   // Check if user has said "Cancel" to all criteria.
   if (checkCriteria.length === Object.keys(passwordCriteria).length) {
     alert("You must pick at least one password criteria. Please try again.");
+    return "";
+
   } else {
     // Show the user the criteria they've chosen
     var selectedCriteria = Object.keys(passwordCriteria).filter((criteria) => {
