@@ -83,39 +83,44 @@ function generatePasswordHelper(passwordLength, passwordCriteria) {
   var specialChars = "!@#$%^&*-_+,.?~"
   var combinedCriteria = "";
 
-  var criteriaKeys = Object.keys(passwordCriteria)
+  
+  // Shuffle the criteria around to try and get a more shuffled combinedCriteria string
+  var passwordCriteriaLength = Object.keys(passwordCriteria).length;
+  var criteriaKeys = Object.keys(passwordCriteria);
+
+  for (var i = 0; i < passwordCriteriaLength; i++) {
+    var indexToUse = Math.floor(Math.random() * passwordCriteriaLength);
+    var indexToReplace = Math.floor(Math.random() * passwordCriteriaLength);
+    
+    var temp = criteriaKeys[indexToReplace];
+    criteriaKeys[indexToReplace] = criteriaKeys[indexToUse];
+    criteriaKeys[indexToUse] = temp;
+  }
+
 
   // Create the combinedCriteria string depending on the user's criteria
-  for (var i = 0; i < Object.keys(passwordCriteria).length; i++) {
-    switch (criteriaKeys[i]) {
-      case "lowercase":
-        if (passwordCriteria.lowercase) {
-          combinedCriteria += lowercase;
-        }
-        break;
+  for (var i = 0; i < criteriaKeys.length; i++) {
+    var criteriaName = criteriaKeys[i];
 
-        
-      case "uppercase":
-        if (passwordCriteria.uppercase) {
-          combinedCriteria += uppercase;
-        }
-        break;
+    // Concat the corresponding string depending on user's criteria choices
+    if (passwordCriteria[criteriaName]) {
+      if (criteriaName === "lowercase") {
+        combinedCriteria += lowercase;
 
-        
-      case "numeric":
-        if (passwordCriteria.numeric) {
-          combinedCriteria += numbers;
-        }
-        break;
+      } else if (criteriaName === "uppercase") {
+        combinedCriteria += uppercase;
 
-        
-      case "specialChars":
-        if (passwordCriteria.specialChars) {
-          combinedCriteria += specialChars;
-        }
-        break;
+      } else if (criteriaName === "numeric") {
+        combinedCriteria += numbers;
+
+      } else if (criteriaName === "specialChars") {
+        combinedCriteria += specialChars;
+
+      } 
     }
   }
+
+  console.log("combinedCriteria:", combinedCriteria)
  
   var password = "";
 
