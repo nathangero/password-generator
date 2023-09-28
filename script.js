@@ -125,7 +125,7 @@ function getCriteriaStrings(criteriaKeys, passwordCriteria) {
   var lowercase = "abcdefjhijklmnopqrstuvwxyz";
   var uppercase = "ABCDEFJHIJKLMNOPQRSTUVWXYZ";
   var numbers = "0123456789";
-  var specialChars = "!@#$%^&*-_+,.?~";
+  var specialChars = "!\"#$%&'()*+,-./:;<=>?@[\]^_`{|}~";
   var combinedCriteria = "";
 
   for (var i = 0; i < criteriaKeys.length; i++) {
